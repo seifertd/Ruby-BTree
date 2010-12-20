@@ -13,5 +13,6 @@ Bones {
   authors  'Douglas A. Seifert'
   email    'doug@dseifert.net'
   url      'http://www.dseifert.net/btree'
+  readme_file 'README.md'
 }
 

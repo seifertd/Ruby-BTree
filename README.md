@@ -1,5 +1,5 @@
 btree
-===========
+=====
 
 Pure ruby implementation of a btree as described in Introduction to Algorithms by 
 Cormen, Leiserson, Rivest and Stein, Chapter 18.
@@ -15,16 +15,17 @@ Features
 Examples
 --------
 
-require 'btree'
-tree = Btree.create    # default degree = 2
-tree = Btree.create(5) # degree = 5
-tree['foo'] = 'foo value'
-tree['bar'] = 'bar value'
-
-puts "key 'foo' has value: #{tree['foo']}"
+    require 'btree'
+    tree = Btree.create    # default degree = 2
+    tree = Btree.create(5) # degree = 5
+    tree['foo'] = 'foo value'
+    tree['bar'] = 'bar value'
+    
+    puts "key 'foo' has value: #{tree['foo']}"
+    puts "BTree has #{tree.size} key-value pairs"
 
 Future
-------------
+------
 
 * Deletion is not implemented. TODO: Implement deletion
 * Attempt to insert existing key raises RuntimeError.

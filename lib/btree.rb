@@ -1,4 +1,4 @@
-
+# :main: README.md
 module Btree
 
   # :stopdoc:
