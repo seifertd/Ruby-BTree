@@ -48,7 +48,29 @@ class Btree::Node
     @keys.size
   end
 
+  def values_of(range)
+
+    result = Array.new
+
+    i = 1
+    while i <= size && range.end >= @keys[i-1].first
+      if range.cover? @keys[i-1].first
+        result << @keys[i-1].last
+        child = @children[i-1].values_of(range) unless leaf?
+        result += child if child
+      end
+      i += 1
+    end
+
+    result
+
+  end
+
+
   def value_of(key)
+
+    return values_of(key) if key.kind_of? Range
+
     i = 1
     while i <= size && key > @keys[i-1].first
       i += 1

@@ -1,8 +1,8 @@
-require 'test/unit'
+require 'minitest/autorun'
 require 'btree'
 require 'shoulda'
 
-class TestBtree < Test::Unit::TestCase
+class TestBtree < MiniTest::Test
   def test_insert_notfull
     t = Btree.create(5)
     t.insert(5, "5")
@@ -38,6 +38,7 @@ class TestBtree < Test::Unit::TestCase
     assert_equal "foo", t.value_of(1)
     assert_nil t.value_of(11)
     assert_equal 4, t.size
+    assert_equal ["findme", "bar"], t.value_of(3..6)
   end
 
   def test_fill_root
