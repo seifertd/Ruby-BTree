@@ -1,10 +1,8 @@
 class Btree::Node
-  attr_accessor :leaf
   def initialize(degree)
     @degree = degree
     @keys = []
     @children = []
-    @leaf = true
   end
 
   def dump(level = 0)
@@ -21,7 +19,6 @@ class Btree::Node
   end
 
   def add_child(node)
-    @leaf = false
     @children << node
   end
 
@@ -42,7 +39,7 @@ class Btree::Node
   end
 
   def leaf?
-    @leaf
+    @children.length == 0
   end
 
   def size
@@ -77,7 +74,7 @@ class Btree::Node
       i += 1
     end
 
-    #puts "Getting value of key #{key}, i = #{i}, keys = #{@keys.inspect}, leaf? #{@leaf}, numchildren: #{@children.size}"
+    #puts "Getting value of key #{key}, i = #{i}, keys = #{@keys.inspect}, leaf? #{leaf?}, numchildren: #{@children.size}"
 
     if i <= size && key == @keys[i-1].first
       #puts "Found key: #{key.inspect}"
@@ -130,8 +127,6 @@ class Btree::Node
       @degree.times do |j|
         z._children[j] = splitee._children[j+@degree]
         y._children[j] = splitee._children[j]
-        z.leaf = z._children.size == 0
-        y.leaf = y._children.size == 0
       end
     end
     mid_val = splitee._keys[@degree-1]
@@ -142,7 +137,6 @@ class Btree::Node
 
     @children[child_idx+1] = z
     @children[child_idx] = y
-    @leaf = false
     
     #puts "SPLIT3: #{self.inspect}"
 

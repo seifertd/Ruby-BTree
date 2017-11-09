@@ -6,7 +6,6 @@ class Btree::Tree
   def initialize(degree = 2)
     @degree = degree
     @root = Btree::Node.new(@degree)
-    @root.leaf = true
     @size = 0
   end
 
