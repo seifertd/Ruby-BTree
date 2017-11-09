@@ -8,7 +8,7 @@ notifications:
 rvm:
   - '2.4.1'
 after_success:
-  - bundle exec bones gem:release
+  - rake gem:release
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
