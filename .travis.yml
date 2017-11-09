@@ -2,11 +2,17 @@ sudo: false
 language: ruby
 cache:
   directories:
-    - node_modules
+  - node_modules
 notifications:
   email: false
 rvm:
-  - '2.4.1'
+- 2.4.1
 branches:
   except:
-    - /^v\d+\.\d+\.\d+$/
+  - "/^v\\d+\\.\\d+\\.\\d+$/"
+deploy:
+  api_key:
+    secure: pDZgw7xhVcsEHA9pNrww1hexa50UqZa5mn2JvnnSw6JejLGhPFP0V520/p5GrdW/wZpHuWSd5L5WuM1Uz6ft0Q+LOeIuHC80WHFNgY6E+D7jS06yX2pELh94lWMlFefZvZbT/qv0LQx8fdDh1Dou6abkXHWCApC6VMJ7vBhi8kw=
+  provider: rubygems
+  on:
+    tags: true
