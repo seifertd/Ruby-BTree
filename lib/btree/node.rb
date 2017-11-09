@@ -7,10 +7,10 @@ class Btree::Node
 
   def dump(level = 0)
     @keys.each_with_index do |key, idx|
+      puts "LEVEL: #{level} => #{key.first}: full? #{full?} leaf? #{leaf?} children: #{values.inspect}"
       if @children[idx]
          @children[idx].dump(level + 1)
       end
-      #puts "#{level}: #{key.first}: full? #{full?} leaf? #{leaf?} children: #{values.inspect}"
     end
     (@children[@keys.size..-1] || []).each do |c|
       c.dump(level+1)
