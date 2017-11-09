@@ -8,7 +8,7 @@ notifications:
 rvm:
   - '2.4.1'
 after_success:
-  - bundle exec rake gem:release
+  - VERSION=`cat version.txt` bundle exec rake gem:release
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/

@@ -14,5 +14,6 @@ Bones {
   email    'doug@dseifert.net'
   url      'https://github.com/seifertd/Ruby-BTree'
   readme_file 'README.md'
+  exclude ['.bnsignore', '.gitignore', '.ruby-gemset', '.ruby-version', '.travis.yml', 'vendor', '.git']
 }
 
