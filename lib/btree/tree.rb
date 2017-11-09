@@ -15,7 +15,6 @@ class Btree::Tree
     node = @root
     if node.full?  
       @root = Btree::Node.new(@degree)
-      @root.leaf = false
       @root.add_child(node)
       @root.split(@root.children.size - 1)
       #puts "After split, root = #{@root.inspect}"

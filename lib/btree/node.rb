@@ -12,7 +12,7 @@ class Btree::Node
       if @children[idx]
          @children[idx].dump(level + 1)
       end
-      puts "#{level}: #{key.first}: full? #{full?} leaf? #{leaf?}"
+      #puts "#{level}: #{key.first}: full? #{full?} leaf? #{leaf?} children: #{values.inspect}"
     end
     (@children[@keys.size..-1] || []).each do |c|
       c.dump(level+1)
@@ -21,6 +21,7 @@ class Btree::Node
   end
 
   def add_child(node)
+    @leaf = false
     @children << node
   end
 
@@ -76,11 +77,16 @@ class Btree::Node
       i += 1
     end
 
+    #puts "Getting value of key #{key}, i = #{i}, keys = #{@keys.inspect}, leaf? #{@leaf}, numchildren: #{@children.size}"
+
     if i <= size && key == @keys[i-1].first
+      #puts "Found key: #{key.inspect}"
       return @keys[i-1].last
     elsif leaf?
+      #puts "We are a leaf, no more children, so val is nil"
       return nil
     else
+      #puts "Looking into child #{i}"
       return @children[i-1].value_of(key)
     end
   end
@@ -116,7 +122,6 @@ class Btree::Node
     splitee = @children[child_idx]
     y = Btree::Node.new(@degree)
     z = Btree::Node.new(@degree)
-    z.leaf = splitee.leaf
     (@degree-1).times do |j|
       z._keys[j] = splitee._keys[j+@degree]
       y._keys[j] = splitee._keys[j]
@@ -125,6 +130,8 @@ class Btree::Node
       @degree.times do |j|
         z._children[j] = splitee._children[j+@degree]
         y._children[j] = splitee._children[j]
+        z.leaf = z._children.size == 0
+        y.leaf = y._children.size == 0
       end
     end
     mid_val = splitee._keys[@degree-1]
@@ -135,6 +142,7 @@ class Btree::Node
 
     @children[child_idx+1] = z
     @children[child_idx] = y
+    @leaf = false
     
     #puts "SPLIT3: #{self.inspect}"
 

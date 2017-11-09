@@ -12,7 +12,7 @@ Bones {
   name  'btree'
   authors  'Douglas A. Seifert'
   email    'doug@dseifert.net'
-  url      'http://www.dseifert.net/btree'
+  url      'https://github.com/seifertd/Ruby-BTree'
   readme_file 'README.md'
 }
 
