@@ -31,7 +31,6 @@ class TestBtree < MiniTest::Test
     45.times do |i|
       t.insert i, i*i
     end
-    t.dump
     assert_equal 45, t.size
     45.times do |i|
       assert_equal i*i, t.value_of(i)

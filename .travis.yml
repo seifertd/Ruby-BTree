@@ -1,0 +1,22 @@
+sudo: false
+language: ruby
+cache:
+  directories:
+    - node_modules
+notifications:
+  email: false
+env:
+  - CXX=g++-4.8
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-4.8
+rvm:
+  - '2.4.1'
+after_success:
+  - bones gem:release
+branches:
+  except:
+    - /^v\d+\.\d+\.\d+$/
