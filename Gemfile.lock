@@ -17,7 +17,7 @@ GEM
     little-plugger (1.1.4)
     loquacious (1.9.1)
     minitest (5.10.3)
-    rake (12.2.1)
+    rake (12.3.3)
     rdoc (5.1.0)
     shoulda (3.5.0)
       shoulda-context (~> 1.0, >= 1.0.1)
@@ -34,7 +34,7 @@ PLATFORMS
 
 DEPENDENCIES
   bones (~> 3.8)
-  rake (~> 12.2)
+  rake (~> 12.3)
   shoulda (~> 3.5)
 
 BUNDLED WITH
