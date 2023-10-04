@@ -11,5 +11,6 @@ gem "rake", "~> 13", :group => [:development, :test]
 # Added at 2017-11-09 08:40:02 -0800 by doug:
 gem "bones", "~> 3.9", :group => [:development, :test]
 
+gem "minitest", :group => [:development, :test]
 # Added at 2017-11-09 08:40:12 -0800 by doug:
 gem "shoulda", "~> 3.5", :group => [:development, :test]

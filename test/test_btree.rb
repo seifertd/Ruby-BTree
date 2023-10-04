@@ -2,7 +2,7 @@ require 'minitest/autorun'
 require 'btree'
 require 'shoulda'
 
-class TestBtree < MiniTest::Test
+class TestBtree < Minitest::Test
   def test_insert_notfull
     t = Btree.create(5)
     t.insert(5, "5")

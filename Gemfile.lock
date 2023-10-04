@@ -37,6 +37,7 @@ PLATFORMS
 
 DEPENDENCIES
   bones (~> 3.9)
+  minitest
   rake (~> 13)
   shoulda (~> 3.5)
 
