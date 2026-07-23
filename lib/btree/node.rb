@@ -1,4 +1,15 @@
 class Btree::Node
+
+  # Nodes holding at most this many keys are searched by a straight scan
+  # rather than by bsearch, whose per-probe block dispatch costs more than the
+  # comparisons it saves on a short array.  The measured crossover is around
+  # 23 keys and the curves are within a couple of percent of each other from
+  # roughly 19 to 23, so the exact value here matters little.  Note that a
+  # degree of 12 or less can never exceed the limit (a node holds at most
+  # 2*degree - 1 keys), and that a node under a larger degree still scans
+  # while it is sparsely filled.
+  LINEAR_SCAN_LIMIT = 20
+
   def initialize(degree)
     @degree = degree
     @keys = []
@@ -57,8 +68,7 @@ class Btree::Node
     # Skip the keys, and the subtrees between them, that sort entirely below
     # the range.  When every key is below it, this lands on the rightmost
     # child, which may still hold in-range keys.
-    i = 0
-    i += 1 while i < size && lo && @keys[i].first < lo
+    i = lo ? key_index(lo) : 0
 
     result += @children[i].values_of(range) if !leaf? && @children[i]
 
@@ -80,52 +90,36 @@ class Btree::Node
 
     return values_of(key) if key.kind_of? Range
 
-    i = 1
-    while i <= size && key > @keys[i-1].first
-      i += 1
-    end
+    i = key_index(key)
 
-    #puts "Getting value of key #{key}, i = #{i}, keys = #{@keys.inspect}, leaf? #{leaf?}, numchildren: #{@children.size}"
-
-    if i <= size && key == @keys[i-1].first
-      #puts "Found key: #{key.inspect}"
-      return @keys[i-1].last
+    if i < size && key == @keys[i].first
+      return @keys[i].last
     elsif leaf?
-      #puts "We are a leaf, no more children, so val is nil"
       return nil
     else
-      #puts "Looking into child #{i}"
-      return @children[i-1].value_of(key)
+      return @children[i].value_of(key)
     end
   end
 
   def insert(key, value)
+    # The slot the key would occupy is also the slot it would already occupy if
+    # it were present, so locating it and rejecting a duplicate are one step.
     # Checked at every node on the way down, not just at the leaf: a key that a
     # split has promoted into an internal node would otherwise be descended
     # past and inserted a second time, hiding one copy in a subtree.
-    raise "Duplicate key" if @keys.any?{|(k,v)| k == key }  #OPTIMIZE: This is inefficient
-    i = size - 1
-    #puts "INSERTING #{key} INTO NODE: #{self.inspect}"
+    i = key_index(key)
+    raise "Duplicate key" if i < size && @keys[i].first == key
+
     if leaf?
-      while i >= 0 && @keys[i] && key < @keys[i].first
-        @keys[i+1] = @keys[i]
-        i -= 1
-      end
-      @keys[i+1] = [key, value]
+      @keys.insert(i, [key, value])
     else
-      while i >= 0 && @keys[i] &&  key < @keys[i].first
-        i -= 1
-      end
-      #puts "   -- INSERT KEY INDEX #{i}"
-      if @children[i+1] && @children[i+1].full?
-        split(i+1)
+      if @children[i] && @children[i].full?
+        split(i)
         # The split just promoted a key into this node, after the check above.
-        raise "Duplicate key" if @keys[i+1].first == key
-        if key > @keys[i+1].first
-          i += 1
-        end
+        raise "Duplicate key" if @keys[i].first == key
+        i += 1 if key > @keys[i].first
       end
-      @children[i+1].insert(key, value)
+      @children[i].insert(key, value)
     end
   end
 
@@ -174,6 +168,23 @@ class Btree::Node
 
   def _children
     @children
+  end
+
+  private
+
+  # Index of the first key that does not sort below the given one, or size if
+  # every key sorts below it.  For an internal node that is also the index of
+  # the child to descend into.  Both branches test only < so that keys need
+  # only support <, > and == -- bsearch's natural k >= key would widen that.
+  def key_index(key)
+    n = size
+    if n <= LINEAR_SCAN_LIMIT
+      i = 0
+      i += 1 while i < n && @keys[i].first < key
+      i
+    else
+      @keys.bsearch_index {|(k, _)| !(k < key) } || n
+    end
   end
 
 end
