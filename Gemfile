@@ -17,4 +17,4 @@ gem "minitest", :group => [:development, :test]
 # meta-gem would also pull in shoulda-matchers, whose only purpose is Rails
 # model assertions this project has no use for, and which drags in the whole
 # activesupport tree behind it.
-gem "shoulda-context", "~> 1.0", :group => [:development, :test]
+gem "shoulda-context", "~> 2.0", :group => [:development, :test]

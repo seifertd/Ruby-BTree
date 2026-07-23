@@ -23,7 +23,7 @@ GEM
       erb
       psych (>= 4.0.0)
       tsort
-    shoulda-context (1.2.2)
+    shoulda-context (2.0.0)
     stringio (3.2.0)
     tsort (0.2.0)
 
@@ -35,7 +35,7 @@ DEPENDENCIES
   bones (~> 3.9)
   minitest
   rake (~> 13)
-  shoulda-context (~> 1.0)
+  shoulda-context (~> 2.0)
 
 CHECKSUMS
   bones (3.9.0) sha256=2b7f3165323a698c9c8dfac8330113b3b7763289a79a253f813b7fe9bcc78e5a
@@ -49,7 +49,7 @@ CHECKSUMS
   psych (5.4.0) sha256=14f72d69a611af663d7d70e4a7b67d9eb1f3ae9f8d916b478961d5a0075ba5b7
   rake (13.4.2) sha256=cb825b2bd5f1f8e91ca37bddb4b9aaf345551b4731da62949be002fa89283701
   rdoc (6.17.0) sha256=0f50d4e568fc98195f9bb155a9e8dff6c7feabfb515fb22ef6df1d12ad5a02b7
-  shoulda-context (1.2.2) sha256=6c25ac1938b9009807c37c2e497fac84f768db3c89d67688459a2ce6bb6616d0
+  shoulda-context (2.0.0) sha256=7adf45342cd800f507d2a053658cb1cce2884b616b26004d39684b912ea32c34
   stringio (3.2.0) sha256=c37cb2e58b4ffbd33fe5cd948c05934af997b36e0b6ca6fdf43afa234cf222e1
   tsort (0.2.0) sha256=9650a793f6859a43b6641671278f79cfead60ac714148aabe4e3f0060480089f
 
