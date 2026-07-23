@@ -100,10 +100,13 @@ class Btree::Node
   end
 
   def insert(key, value)
+    # Checked at every node on the way down, not just at the leaf: a key that a
+    # split has promoted into an internal node would otherwise be descended
+    # past and inserted a second time, hiding one copy in a subtree.
+    raise "Duplicate key" if @keys.any?{|(k,v)| k == key }  #OPTIMIZE: This is inefficient
     i = size - 1
     #puts "INSERTING #{key} INTO NODE: #{self.inspect}"
     if leaf?
-      raise "Duplicate key" if @keys.any?{|(k,v)| k == key }  #OPTIMIZE: This is inefficient
       while i >= 0 && @keys[i] && key < @keys[i].first
         @keys[i+1] = @keys[i]
         i -= 1
@@ -116,6 +119,8 @@ class Btree::Node
       #puts "   -- INSERT KEY INDEX #{i}"
       if @children[i+1] && @children[i+1].full?
         split(i+1)
+        # The split just promoted a key into this node, after the check above.
+        raise "Duplicate key" if @keys[i+1].first == key
         if key > @keys[i+1].first
           i += 1
         end

@@ -23,6 +23,28 @@ class TestBtree < Minitest::Test
     assert_equal %w[8 9 10], t.value_of(8..10)
   end
 
+  def test_insert_duplicate_of_internal_key
+    t = multi_level_tree
+    internal_key = t.root.keys.first
+    refute t.root.leaf?, "fixture should have an internal root"
+    assert_raises(RuntimeError) do
+      t.insert(internal_key, "duplicate")
+    end
+  end
+
+  def test_duplicate_of_internal_key_does_not_corrupt_size
+    t = multi_level_tree
+    internal_key = t.root.keys.first
+    size_before = t.size
+    begin
+      t.insert(internal_key, "duplicate")
+    rescue RuntimeError
+      # expected once duplicate detection descends past the leaves
+    end
+    assert_equal size_before, t.size
+    assert_equal internal_key.to_s, t.value_of(internal_key)
+  end
+
   def test_insert_notfull
     t = Btree.create(5)
     t.insert(5, "5")
