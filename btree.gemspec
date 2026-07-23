@@ -34,6 +34,11 @@ Gem::Specification.new do |s|
     'homepage_uri'    => s.homepage,
     'source_code_uri' => s.homepage,
     'changelog_uri'   => "#{s.homepage}/blob/master/History.txt",
-    'bug_tracker_uri' => "#{s.homepage}/issues"
+    'bug_tracker_uri' => "#{s.homepage}/issues",
+
+    # Requires that whoever pushes this gem has MFA enabled on their
+    # rubygems.org account, so a leaked API key is not enough on its own.
+    # This needs MFA turned on for the account first, or the push is rejected.
+    'rubygems_mfa_required' => 'true'
   }
 end
