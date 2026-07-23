@@ -1,3 +1,22 @@
+== 1.0.1 / 2026-07-23
+
+* 2 bug fixes
+  * Range queries now visit every subtree that can contain an in-range key.
+    Previously the descent stopped at the first key at or above the range end,
+    so values held in later subtrees were silently omitted from the result.
+  * Inserting a key that a node split had promoted into an internal node now
+    raises "Duplicate key". Previously the duplicate check ran only at the
+    leaf, so such a key was descended past and inserted a second time, leaving
+    one copy unreachable in a subtree.
+
+* 1 minor enhancement
+  * Nodes locate keys by a hybrid linear/binary search, scanning small nodes
+    and using bsearch on large ones.
+
+== 1.0.0 / 2017-11-09
+
+* Initial gem release.
+
 == 0.0.0 / 2010-12-20
 
 * 1 major enhancement
