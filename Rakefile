@@ -14,6 +14,9 @@ Bones {
   email    'doug@dseifert.net'
   url      'https://github.com/seifertd/Ruby-BTree'
   readme_file 'README.md'
-  exclude ['.bnsignore', '.gitignore', '.ruby-gemset', '.ruby-version', 'vendor', '.git']
+  # Setting exclude replaces the Bones defaults, which is why '^pkg/' has to be
+  # named here: without it, build products from previous releases under pkg/
+  # get swept into the manifest and shipped inside the next gem.
+  exclude ['.bnsignore', '.gitignore', '.github', '.ruby-gemset', '.ruby-version', '^pkg/', 'vendor', '.git']
 }
 
