@@ -46,17 +46,28 @@ class Btree::Node
     @keys.size
   end
 
+  # Values whose keys fall in the range, in key order.  Subtrees that cannot
+  # contain an in-range key are never visited.
   def values_of(range)
 
     result = Array.new
+    lo = range.begin
+    hi = range.end
 
-    i = 1
-    while i <= size && range.end >= @keys[i-1].first
-      if range.cover? @keys[i-1].first
-        result << @keys[i-1].last
-        child = @children[i-1].values_of(range) unless leaf?
-        result += child if child
-      end
+    # Skip the keys, and the subtrees between them, that sort entirely below
+    # the range.  When every key is below it, this lands on the rightmost
+    # child, which may still hold in-range keys.
+    i = 0
+    i += 1 while i < size && lo && @keys[i].first < lo
+
+    result += @children[i].values_of(range) if !leaf? && @children[i]
+
+    while i < size
+      key = @keys[i].first
+      # Everything from here on sorts above the range.
+      break if hi && (range.exclude_end? ? key >= hi : key > hi)
+      result << @keys[i].last if range.cover? key
+      result += @children[i+1].values_of(range) if !leaf? && @children[i+1]
       i += 1
     end
 

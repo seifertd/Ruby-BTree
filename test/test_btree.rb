@@ -3,6 +3,26 @@ require 'btree'
 require 'shoulda'
 
 class TestBtree < Minitest::Test
+  # Degree 2 tree with a real internal node:
+  #   root                [10, 20]
+  #   children  [5,6,7] [12,17] [30]
+  def multi_level_tree
+    t = Btree.create(2)
+    [10, 20, 5, 6, 12, 30, 7, 17].each {|k| t.insert(k, k.to_s)}
+    t
+  end
+
+  def test_range_query_spans_multiple_children
+    t = multi_level_tree
+    assert_equal %w[5 6 7 10 12 17], t.value_of(5..17)
+  end
+
+  def test_range_query_finds_keys_in_rightmost_child
+    t = Btree.create(2)
+    (1..10).each {|k| t.insert(k, k.to_s)}
+    assert_equal %w[8 9 10], t.value_of(8..10)
+  end
+
   def test_insert_notfull
     t = Btree.create(5)
     t.insert(5, "5")
