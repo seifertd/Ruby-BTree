@@ -1,6 +1,6 @@
 require 'minitest/autorun'
 require 'btree'
-require 'shoulda'
+require 'shoulda/context'
 
 class TestBtree < Minitest::Test
   # Degree 2 tree with a real internal node:

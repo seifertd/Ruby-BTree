@@ -1,0 +1,34 @@
+name: test
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # 3.2 is the floor set by the dev toolchain -- minitest 6, erb 6 and
+        # bundler 4 all require it.  The library itself has no runtime
+        # dependencies and no version-specific syntax, so it runs well below
+        # this; the matrix only covers what the test suite can be installed on.
+        ruby: ['3.2', '3.3', '3.4']
+
+    name: ruby ${{ matrix.ruby }}
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+
+      - run: bundle exec rake test

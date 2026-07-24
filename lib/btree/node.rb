@@ -9,6 +9,7 @@ class Btree::Node
   # 2*degree - 1 keys), and that a node under a larger degree still scans
   # while it is sparsely filled.
   LINEAR_SCAN_LIMIT = 20
+  private_constant :LINEAR_SCAN_LIMIT
 
   def initialize(degree)
     @degree = degree
