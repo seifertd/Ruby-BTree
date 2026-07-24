@@ -75,8 +75,14 @@ namespace :release do
     end
 
     # Surfaced now rather than as a 403 after the tag has been pushed.
-    unless ENV['GEM_HOST_API_KEY'] || File.exist?(File.expand_path('~/.gem/credentials'))
-      problems << 'no rubygems credentials found; run `gem signin` (the key needs the push_rubygem scope)'
+    # Ask RubyGems where the credentials file lives rather than assuming
+    # ~/.gem/credentials: modern installs use the XDG path
+    # (~/.local/share/gem/credentials), and hardcoding the old one reports a
+    # missing key that is really there.
+    require 'rubygems/config_file'
+    creds = Gem.configuration.credentials_path
+    unless ENV['GEM_HOST_API_KEY'] || File.exist?(creds)
+      problems << "no rubygems credentials at #{creds}; run `gem signin` (the key needs the push_rubygem scope)"
     end
 
     branch = `git rev-parse --abbrev-ref HEAD`.strip
